@@ -19,23 +19,24 @@ db.on("error", function(error) {
 });
 
 app.get("/scrape", function (req,res){
-    request("ttp://www.maxpreps.com/list/stat_leaders.aspx?gendersport=boys,football", function(error, response, html) {
-        console.log(html)
+    request("http://www.maxpreps.com/list/stat_leaders.aspx?gendersport=boys,football/", function(error, response, html) {
+        //console.log(html)
         var $ = cheerio.load(html);
-        var results = [];
-    
-        // $("figure.rollover").each(function(i, element) {
-          
-        //   var imgLink = $(element).find("a").find("img").attr("data-srcset").split(",")[0].split(" ")[0];
-    
-        //   // Push the image's URL into mongodb
-        //   //results.push({ link: imgLink });
-        //   //console.log(results)
-        //   db.scrapedData.insert({"link": imgLink})
-        // })
+        var categories = [];
+
+        var test = $("h1").text();
+        console.log(test)
     
         
-      });
+        $("div ul li").each(function(i, element) {
+           
+            var category = $(element).attr("data-leaderboard-name")
+            categories.push(category);
+
+        }); console.log(categories)
+    
+        
+      }); res.send("scraping")
 })
 
 
